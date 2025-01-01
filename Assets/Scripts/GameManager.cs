@@ -16,16 +16,20 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null) {
+        if (Instance != null)
+        {
             DestroyImmediate(gameObject);
-        } else {
+        }
+        else
+        {
             Instance = this;
         }
     }
 
     private void OnDestroy()
     {
-        if (Instance == this) {
+        if (Instance == this)
+        {
             Instance = null;
         }
     }
@@ -49,8 +53,9 @@ public class GameManager : MonoBehaviour
         gameOver.SetActive(false);
         Time.timeScale = 1f;
         player.enabled = true;
-        Pipes[] pipes = FindObjectsOfType<Pipes>();
-        for (int i = 0; i < pipes.Length; i++) {
+        Pipes[] pipes = Object.FindObjectsByType<Pipes>(FindObjectsSortMode.None);
+        for (int i = 0; i < pipes.Length; i++)
+        {
             Destroy(pipes[i].gameObject);
         }
     }
