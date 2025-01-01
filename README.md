@@ -14,4 +14,5 @@ ex git checkout -b mytype
 >git commit -m "Your commit message"
 >
 >git push -u origin <新分支名稱>
-
+## 把東西下載來做使用
+> git clone https://github.com/Nebula-City/flapppy-bird-tranning-by-xiaom.git
