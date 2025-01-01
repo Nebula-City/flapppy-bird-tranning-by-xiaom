@@ -11,17 +11,17 @@ public class Spawner : MonoBehaviour
     private float elapsedTime = 0f;  // 累計時間
     public float difficultyIncreaseRate = 10f; // 每 10 秒提高一次難度
 
-    private void OnEnable()
+    public void OnEnable()
     {
         InvokeRepeating(nameof(Spawn), spawnRate, spawnRate);
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
         CancelInvoke(nameof(Spawn));
     }
 
-    private void Update()
+    public void Update()
     {
         // 計算累計時間
         elapsedTime += Time.deltaTime;
@@ -34,7 +34,7 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    private void Spawn()
+    public void Spawn()
     {
         Pipes pipes = Instantiate(prefab, transform.position, Quaternion.identity);
         pipes.transform.position += Vector3.up * Random.Range(minHeight, maxHeight);
@@ -43,9 +43,14 @@ public class Spawner : MonoBehaviour
 
     public void IncreaseDifficulty()
     {
-        // 縮短生成間隔，最小限制為 0.5 秒
-        spawnRate = Mathf.Max(0.5f, spawnRate - 0.1f);
+        // 縮短生成間隔，最小限制為 0.8 秒
+        spawnRate = Mathf.Max(0.8f, spawnRate - 0.05f);
         CancelInvoke(nameof(Spawn));
         InvokeRepeating(nameof(Spawn), spawnRate, spawnRate);
+
+        // 減少管道間距，最小限制為 2.5
+        verticalGap = Mathf.Max(2.5f, verticalGap - 0.1f);
+
+        Debug.Log($"Difficulty increased: spawnRate={spawnRate}, verticalGap={verticalGap}");
     }
 }
