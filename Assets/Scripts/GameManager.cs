@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Pause();
+        HideCursor(); // 隱藏鼠標指針
     }
 
     public void Pause()
@@ -47,12 +48,14 @@ public class GameManager : MonoBehaviour
 
     public void Play()
     {
+        HideCursor(); // 開始遊戲時隱藏鼠標
         score = 0;
         scoreText.text = score.ToString();
         playButton.SetActive(false);
         gameOver.SetActive(false);
         Time.timeScale = 1f;
         player.enabled = true;
+
         Pipes[] pipes = Object.FindObjectsByType<Pipes>(FindObjectsSortMode.None);
         for (int i = 0; i < pipes.Length; i++)
         {
@@ -64,6 +67,7 @@ public class GameManager : MonoBehaviour
     {
         playButton.SetActive(true);
         gameOver.SetActive(true);
+        ShowCursor(); // 顯示鼠標指針
         Pause();
     }
 
@@ -73,4 +77,15 @@ public class GameManager : MonoBehaviour
         scoreText.text = score.ToString();
     }
 
+    private void HideCursor()
+    {
+        Cursor.visible = false; // 隱藏鼠標指針
+        Cursor.lockState = CursorLockMode.Confined; // 限制鼠標在遊戲窗口
+    }
+
+    private void ShowCursor()
+    {
+        Cursor.visible = true; // 顯示鼠標指針
+        Cursor.lockState = CursorLockMode.None; // 解除鼠標限制
+    }
 }
