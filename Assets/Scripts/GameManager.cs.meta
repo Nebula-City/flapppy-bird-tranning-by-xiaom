@@ -3,7 +3,14 @@ guid: ae79f9d99372a6b438f800230f434b9d
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - player: {instanceID: 0}
+  - spawner: {instanceID: 0}
+  - scoreText: {instanceID: 0}
+  - playButton: {instanceID: 0}
+  - gameOver: {instanceID: 0}
+  - deathReasonText: {fileID: 5278077805207352169, guid: 95158849b194a4346ac10c79dfb06e29,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
