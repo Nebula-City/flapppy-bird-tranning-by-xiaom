@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
         scoreText.text = score.ToString();
     }
 
+
     private void HideCursor()
     {
         Cursor.visible = false; // 隱藏鼠標指針
