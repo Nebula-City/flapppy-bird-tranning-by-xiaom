@@ -55,13 +55,8 @@ public class GameManager : MonoBehaviour
         gameOver.SetActive(false);
         Time.timeScale = 1f;
         player.enabled = true;
-
-        Pipes[] pipes = Object.FindObjectsByType<Pipes>(FindObjectsSortMode.None);
-        for (int i = 0; i < pipes.Length; i++)
-        {
-            Destroy(pipes[i].gameObject);
-        }
     }
+
 
     public void GameOver()
     {
@@ -75,7 +70,29 @@ public class GameManager : MonoBehaviour
     {
         score++;
         scoreText.text = score.ToString();
+        // 每 10 分提高一次難度
+        if (score % 10 == 0)
+        {
+            // 找到場景中所有的 Spawner
+            Spawner[] spawners = Object.FindObjectsByType<Spawner>(FindObjectsSortMode.None);
+            if (spawners.Length > 0)
+            {
+                foreach (Spawner spawner in spawners)
+                {
+                    spawner.IncreaseDifficulty(); // 提高難度
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No Spawners found in the scene!");
+            }
+
+            // 增加 Pipes 的速度
+            Pipes.IncreaseSpeed();
+        }
     }
+
+
 
     private void HideCursor()
     {
