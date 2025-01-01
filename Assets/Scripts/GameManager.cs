@@ -11,19 +11,25 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text scoreText;
     [SerializeField] private GameObject playButton;
     [SerializeField] private GameObject gameOver;
-
+    [SerializeField] private GameObject getReady;
+    [SerializeField] private Text deathReasonText; // 在 Unity 編輯器中指定
+    private string deathReason = "未知原因";
     public int score { get; private set; } = 0;
 
     private void Awake()
     {
-        if (Instance != null)
+        if (Instance != null && Instance != this)
         {
-            DestroyImmediate(gameObject);
+            Destroy(gameObject); // 使用 Destroy 替代 DestroyImmediate
+            return;
         }
-        else
-        {
-            Instance = this;
-        }
+
+        Instance = this;
+    }
+
+    public void SetDeathReason(string reason)
+    {
+        deathReason = reason;
     }
 
     private void OnDestroy()
@@ -37,11 +43,14 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Pause();
+        deathReasonText.gameObject.SetActive(false);
+        getReady.SetActive(true);
         HideCursor(); // 隱藏鼠標指針
     }
 
     public void Pause()
     {
+
         Time.timeScale = 0f;
         player.enabled = false;
     }
@@ -51,11 +60,12 @@ public class GameManager : MonoBehaviour
         HideCursor(); // 開始遊戲時隱藏鼠標
         score = 0;
         scoreText.text = score.ToString();
+        deathReasonText.gameObject.SetActive(false);
         playButton.SetActive(false);
         gameOver.SetActive(false);
+        getReady.SetActive(false);
         Time.timeScale = 1f;
         player.enabled = true;
-
         Pipes[] pipes = Object.FindObjectsByType<Pipes>(FindObjectsSortMode.None);
         for (int i = 0; i < pipes.Length; i++)
         {
@@ -67,6 +77,8 @@ public class GameManager : MonoBehaviour
     {
         playButton.SetActive(true);
         gameOver.SetActive(true);
+        deathReasonText.text = $"死亡原因:\n{deathReason}";
+        deathReasonText.gameObject.SetActive(true);
         ShowCursor(); // 顯示鼠標指針
         Pause();
     }
