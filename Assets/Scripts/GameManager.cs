@@ -66,15 +66,15 @@ public class GameManager : MonoBehaviour
         getReady.SetActive(false);
         Time.timeScale = 1f;
         player.enabled = true;
-        
-         new-branch
+
+
         Pipes[] pipes = Object.FindObjectsByType<Pipes>(FindObjectsSortMode.None);
         for (int i = 0; i < pipes.Length; i++)
         {
             Destroy(pipes[i].gameObject);
         }
 
-        main
+
     }
 
 
