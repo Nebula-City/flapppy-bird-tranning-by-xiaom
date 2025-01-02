@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    private PlayerData playerData;
 
     [SerializeField] private Player player;
     [SerializeField] private Spawner spawner;
@@ -46,6 +47,13 @@ public class GameManager : MonoBehaviour
         deathReasonText.gameObject.SetActive(false);
         getReady.SetActive(true);
         HideCursor(); // 隱藏鼠標指針
+
+        playerData = DataManger.LoadData();
+
+
+        playerData.PlayerName = hash(); 
+
+
     }
 
     public void Pause()
@@ -82,6 +90,11 @@ public class GameManager : MonoBehaviour
     {
         playButton.SetActive(true);
         gameOver.SetActive(true);
+
+        playerData.Score = score;
+        DataManager.SaveData(playerData);
+        
+
         deathReasonText.text = $"死亡原因:\n{deathReason}";
         deathReasonText.gameObject.SetActive(true);
         ShowCursor(); // 顯示鼠標指針
@@ -126,5 +139,23 @@ public class GameManager : MonoBehaviour
     {
         Cursor.visible = true; // 顯示鼠標指針
         Cursor.lockState = CursorLockMode.None; // 解除鼠標限制
+    }
+}
+
+private string hash()
+{
+    string seed = $"{System.DateTime.Now.Ticks}{Random.Range(0, int.MaxValue)}";
+
+    using (MD5 md5 = MD5.Create())
+    {
+        byte[] hashBytes = md5.ComputeHash(Encoding.UTF8.GetBytes(seed));
+        StringBuilder hashString = new StringBuilder();
+
+        for (int i = 0; i < hashBytes.Length; i++)
+        {
+            hashString.Append(hashBytes[i].ToString("X2"));
+        }
+
+        return $"Player_{hashString.ToString().Substring(0, 8)}";
     }
 }
